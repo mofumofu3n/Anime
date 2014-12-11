@@ -16,8 +16,11 @@ public class HomeFragment extends Fragment {
     private String[] mDataset;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         mDataset = getResources().getStringArray(R.array.dataset);
 
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
