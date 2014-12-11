@@ -1,4 +1,4 @@
-package com.ichif1205.anime;
+package com.ichif1205.anime.home;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
+import com.ichif1205.anime.R;
 
 
 public class HomeActivity extends FragmentActivity {

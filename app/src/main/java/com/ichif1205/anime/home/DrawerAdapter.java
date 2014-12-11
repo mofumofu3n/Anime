@@ -1,10 +1,12 @@
-package com.ichif1205.anime;
+package com.ichif1205.anime.home;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ichif1205.anime.R;
 
 public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final String[] mDataset;

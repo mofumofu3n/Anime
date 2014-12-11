@@ -1,4 +1,4 @@
-package com.ichif1205.anime;
+package com.ichif1205.anime.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.ichif1205.anime.R;
 
 public class HomeFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
