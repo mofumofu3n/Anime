@@ -37,24 +37,6 @@ android {
     }
 }
 
-apply plugin: 'checkstyle'
-
-task checkstyle(type: Checkstyle) {
-    source 'src'
-    include '**/*.java'
-    exclude '**/gen/**'
-    exclude '**/R.java'
-    exclude '**/BuildConfig.java'
-
-    def configProps = ['proj.module.dir': new File(projectDir, "config/checkstyle")]
-    configProperties configProps
-
-    // empty classpath
-    classpath = files()
-}
-
-preBuild.dependsOn('checkstyle')
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:21.0.+"
