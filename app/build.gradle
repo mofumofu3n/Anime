@@ -45,4 +45,5 @@ dependencies {
     compile "com.android.support:support-v13:21.0.+"
     compile "com.google.android.gms:play-services:+"
     compile "com.crashlytics.android:crashlytics:1.+"
+    compile project(':modules:volley')
 }
