@@ -30,7 +30,7 @@ public class NewArticleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_article, container, false);
+        final View view = inflater.inflate(R.layout.fragment_article_list, container, false);
         ButterKnife.inject(this, view);
 
         mRecyclerView.setHasFixedSize(true);
