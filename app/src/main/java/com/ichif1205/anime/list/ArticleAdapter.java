@@ -1,11 +1,14 @@
 package com.ichif1205.anime.list;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.model.Article;
 
@@ -16,9 +19,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
+    private final ImageLoader mImageLoader;
     private ArrayList<Article> mList;
 
-    public ArticleAdapter() {
+    public ArticleAdapter(ImageLoader loader) {
+        mImageLoader = loader;
         mList = new ArrayList<>();
     }
 
@@ -30,8 +35,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_article, parent, false);
 
-        final ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -40,7 +44,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
             return;
         }
         final Article article = mList.get(position);
-        holder.mTitleView.setText(article.title);
+        holder.bind(article);
     }
 
     @Override
@@ -54,10 +58,21 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.title)
         TextView mTitleView;
+        @InjectView(R.id.image)
+        NetworkImageView mImageView;
 
         public ViewHolder(View view) {
             super(view);
             ButterKnife.inject(this, view);
+        }
+
+        public void bind(Article article) {
+            mTitleView.setText(article.title);
+            if (TextUtils.isEmpty(article.url)) {
+                mImageView.setVisibility(View.GONE);
+            } else {
+                mImageView.setImageUrl(article.image, mImageLoader);
+            }
         }
     }
 }
