@@ -1,6 +1,7 @@
 package com.ichif1205.anime.request;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.ichif1205.anime.model.Article;
 
@@ -30,6 +31,8 @@ public class ArticleRequest extends JsonArrayRequest {
                 final Article article = Article.parse(row);
                 articleList.add(article);
             } catch (JSONException e) {
+                deliverError(new VolleyError(e));
+                return;
             }
         }
         if (mListener == null) {
