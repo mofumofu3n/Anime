@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
     private void assignArticleFragment() {
         final FragmentManager manager = getFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.container_article, ArticleFragment.newInstance("hogegheo", "fugafuga"));
+        transaction.add(R.id.container_article, new ArticleFragment());
         transaction.commit();
     }
 }
