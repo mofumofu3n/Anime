@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ArticleFragment extends Fragment {
+public class NewArticleFragment extends Fragment {
     @InjectView(R.id.article_list) RecyclerView mRecyclerView;
     private ArticleAdapter mAdapter;
 

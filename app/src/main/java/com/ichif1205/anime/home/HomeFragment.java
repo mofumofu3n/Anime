@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ichif1205.anime.R;
-import com.ichif1205.anime.list.ArticleFragment;
+import com.ichif1205.anime.list.NewArticleFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
     private void assignArticleFragment() {
         final FragmentManager manager = getFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.container_article, new ArticleFragment());
+        transaction.add(R.id.container_article, new NewArticleFragment());
         transaction.commit();
     }
 }
