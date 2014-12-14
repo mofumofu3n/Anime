@@ -4,23 +4,22 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.model.Article;
 import com.ichif1205.anime.request.ArticleRequest;
 import com.ichif1205.anime.request.RequestManager;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
 public class ArticleFragment extends Fragment {
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,11 +31,7 @@ public class ArticleFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final ArticleRequest request = new ArticleRequest(
-                "http://192.168.33.10/anime/article/read",
-                createOnListener(),
-                createErrorListener());
-
+        final ArticleRequest request = new ArticleRequest("http://192.168.33.10/anime/article/read");
         getRequestQueue(getActivity()).add(request);
     }
 
@@ -44,22 +39,29 @@ public class ArticleFragment extends Fragment {
         return RequestManager.getInstance().getRequestQueue(context);
     }
 
-    private Response.Listener<List<Article>> createOnListener() {
-        return new Response.Listener<List<Article>>() {
-            @Override
-            public void onResponse(List<Article> response) {
-
-            }
-        };
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusHolder.get().register(this);
     }
 
-    private Response.ErrorListener createErrorListener() {
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        };
+    @Override
+    public void onPause() {
+        BusHolder.get().unregister(this);
+        super.onPause();
     }
 
+    @Subscribe
+    public void onResponse(ArticleRequest.SuccessEvent event) {
+        final List<Article> articleList = event.getList();
+
+        for (Article article : articleList) {
+            Log.d("hoge", article.title);
+        }
+    }
+
+    @Subscribe
+    public void onError(ArticleRequest.ErrorEvent event) {
+
+    }
 }

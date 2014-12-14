@@ -1,8 +1,8 @@
 package com.ichif1205.anime.request;
 
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.model.Article;
 
 import org.json.JSONArray;
@@ -13,11 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleRequest extends JsonArrayRequest {
-    private Response.Listener<List<Article>> mListener;
 
-    public ArticleRequest(String url, Response.Listener<List<Article>> listener, Response.ErrorListener errorListener) {
-        super(url, null, errorListener);
-        mListener = listener;
+    public ArticleRequest(String url) {
+        super(url, null, null);
     }
 
     @Override
@@ -35,10 +33,35 @@ public class ArticleRequest extends JsonArrayRequest {
                 return;
             }
         }
-        if (mListener == null) {
-            return;
-        }
-        mListener.onResponse(articleList);
+        BusHolder.get().post(new SuccessEvent(articleList));
     }
 
+    @Override
+    public void deliverError(VolleyError error) {
+        BusHolder.get().post(new ErrorEvent(error));
+    }
+
+    public class SuccessEvent {
+        private final List<Article> mList;
+
+        public SuccessEvent(List<Article> list) {
+            mList = list;
+        }
+
+        public List<Article> getList() {
+            return mList;
+        }
+    }
+
+    public class ErrorEvent {
+        private final VolleyError mError;
+
+        public ErrorEvent(VolleyError error) {
+            mError = error;
+        }
+
+        public VolleyError getError() {
+            return mError;
+        }
+    }
 }
