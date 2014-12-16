@@ -18,7 +18,10 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
+public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int TYPE_CARD = 0;
+    private static final int TYPE_NO_IMAGE = 1;
+
     private final ImageLoader mImageLoader;
     private ArrayList<Article> mList;
     private OnItemClickListener mListener;
@@ -33,19 +36,34 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_article, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        return new ViewHolder(view);
+        if (viewType == TYPE_CARD) {
+            final View view = inflater.inflate(R.layout.layout_article, parent, false);
+            return new CardHolder(view);
+        } else if (viewType == TYPE_NO_IMAGE) {
+            final View view = inflater.inflate(R.layout.layout_no_image_article, parent, false);
+            return new NoImageHolder(view);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mList == null || mList.size() == 0) {
             return;
         }
         final Article article = mList.get(position);
-        holder.bind(article);
+
+        final int type = getItemViewType(position);
+//        ((CardHolder) holder).bind(article);
+
+        if (type == TYPE_CARD) {
+            ((CardHolder) holder).bind(article);
+        } else if (type == TYPE_NO_IMAGE) {
+            ((NoImageHolder) holder).bind(article);
+        }
     }
 
     @Override
@@ -56,6 +74,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         return mList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        final Article article = mList.get(position);
+
+        if (TextUtils.isEmpty(article.image)) {
+            return TYPE_NO_IMAGE;
+        } else {
+            return TYPE_CARD;
+        }
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
@@ -64,7 +93,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         void onItemClick(Article article);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CardHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @InjectView(R.id.title)
         TextView mTitleView;
         @InjectView(R.id.image)
@@ -72,19 +101,47 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
         private Article mArticle;
 
-        public ViewHolder(View view) {
+        public CardHolder(View view) {
             super(view);
             ButterKnife.inject(this, view);
             view.setOnClickListener(this);
         }
 
         public void bind(Article article) {
-            mTitleView.setText(article.title);
-            if (TextUtils.isEmpty(article.url)) {
+            mArticle = article;
+
+            mTitleView.setText(mArticle.title);
+            if (TextUtils.isEmpty(mArticle.image)) {
                 mImageView.setVisibility(View.GONE);
             } else {
-                mImageView.setImageUrl(article.image, mImageLoader);
+                mImageView.setImageUrl(mArticle.image, mImageLoader);
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mListener == null) {
+                return;
+            }
+            mListener.onItemClick(mArticle);
+        }
+    }
+
+    public class NoImageHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @InjectView(R.id.title)
+        TextView mTitleView;
+
+        private Article mArticle;
+
+        public NoImageHolder(View itemView) {
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        public void bind(Article article) {
+            mArticle = article;
+            mTitleView.setText(mArticle.title);
         }
 
         @Override
