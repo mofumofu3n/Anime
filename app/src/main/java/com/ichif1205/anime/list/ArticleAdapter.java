@@ -21,6 +21,7 @@ import butterknife.InjectView;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
     private final ImageLoader mImageLoader;
     private ArrayList<Article> mList;
+    private OnItemClickListener mListener;
 
     public ArticleAdapter(ImageLoader loader) {
         mImageLoader = loader;
@@ -55,15 +56,26 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         return mList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Article article);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @InjectView(R.id.title)
         TextView mTitleView;
         @InjectView(R.id.image)
         NetworkImageView mImageView;
 
+        private Article mArticle;
+
         public ViewHolder(View view) {
             super(view);
             ButterKnife.inject(this, view);
+            view.setOnClickListener(this);
         }
 
         public void bind(Article article) {
@@ -73,6 +85,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
             } else {
                 mImageView.setImageUrl(article.image, mImageLoader);
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mListener == null) {
+                return;
+            }
+            mListener.onItemClick(mArticle);
         }
     }
 }

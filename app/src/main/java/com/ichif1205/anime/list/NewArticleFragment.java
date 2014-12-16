@@ -24,7 +24,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class NewArticleFragment extends Fragment {
-    @InjectView(R.id.article_list) RecyclerView mRecyclerView;
+    @InjectView(R.id.article_list)
+    RecyclerView mRecyclerView;
     private ArticleAdapter mAdapter;
 
     @Override
@@ -36,6 +37,7 @@ public class NewArticleFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ArticleAdapter(RequestManager.getInstance().getImageLoader(getActivity()));
+        mAdapter.setOnItemClickListener(createClickListener());
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
@@ -76,5 +78,13 @@ public class NewArticleFragment extends Fragment {
     @Subscribe
     public void onError(ArticleRequest.ErrorEvent event) {
 
+    }
+
+    private ArticleAdapter.OnItemClickListener createClickListener() {
+        return new ArticleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Article article) {
+            }
+        };
     }
 }

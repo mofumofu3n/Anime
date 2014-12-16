@@ -15,7 +15,7 @@ import com.ichif1205.anime.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ArticleFragment extends Fragment{
+public class ArticleFragment extends Fragment {
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip mTabs;
 
