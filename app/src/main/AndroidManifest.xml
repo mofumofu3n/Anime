@@ -19,6 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".browser.BrowserActivity"
+            android:exported="false"
+            />
+
         <meta-data android:name="com.crashlytics.ApiKey" android:value="94c52bbff70c8761e6632cee4c01f9a23343dc3d"/>
     </application>
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.android.volley.RequestQueue;
 import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
+import com.ichif1205.anime.browser.BrowserActivity;
 import com.ichif1205.anime.model.Article;
 import com.ichif1205.anime.request.ArticleRequest;
 import com.ichif1205.anime.request.RequestManager;
@@ -82,5 +83,6 @@ public class NewArticleFragment extends Fragment {
     @Subscribe
     public void onItemClick(ArticleAdapter.OnItemClick event) {
         final Article article = event.getArticle();
+        BrowserActivity.start(getActivity(), article);
     }
 }
