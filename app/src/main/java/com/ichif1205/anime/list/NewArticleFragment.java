@@ -37,7 +37,6 @@ public class NewArticleFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ArticleAdapter(RequestManager.getInstance().getImageLoader(getActivity()));
-        mAdapter.setOnItemClickListener(createClickListener());
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
@@ -80,11 +79,8 @@ public class NewArticleFragment extends Fragment {
 
     }
 
-    private ArticleAdapter.OnItemClickListener createClickListener() {
-        return new ArticleAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Article article) {
-            }
-        };
+    @Subscribe
+    public void onItemClick(ArticleAdapter.OnItemClick event) {
+        final Article article = event.getArticle();
     }
 }

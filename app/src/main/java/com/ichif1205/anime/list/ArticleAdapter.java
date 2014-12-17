@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.model.Article;
 
@@ -24,7 +25,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private final ImageLoader mImageLoader;
     private ArrayList<Article> mList;
-    private OnItemClickListener mListener;
 
     public ArticleAdapter(ImageLoader loader) {
         mImageLoader = loader;
@@ -85,12 +85,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
-    }
+    public class OnItemClick {
+        private final Article mArticle;
 
-    public interface OnItemClickListener {
-        void onItemClick(Article article);
+        public OnItemClick(Article article) {
+            mArticle = article;
+        }
+
+        public Article getArticle() {
+            return mArticle;
+        }
     }
 
     public class CardHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -120,10 +124,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Override
         public void onClick(View v) {
-            if (mListener == null) {
-                return;
-            }
-            mListener.onItemClick(mArticle);
+            BusHolder.get().post(new OnItemClick(mArticle));
         }
     }
 
@@ -146,10 +147,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Override
         public void onClick(View v) {
-            if (mListener == null) {
-                return;
-            }
-            mListener.onItemClick(mArticle);
+            BusHolder.get().post(new OnItemClick(mArticle));
         }
     }
 }
