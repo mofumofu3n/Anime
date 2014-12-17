@@ -18,7 +18,11 @@ public class ArticlePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new NewArticleFragment();
+        if (position == 0) {
+            return new NewArticleFragment();
+        } else {
+            return new TodayArticleFragment();
+        }
     }
 
     @Override
