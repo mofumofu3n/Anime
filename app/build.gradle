@@ -55,4 +55,5 @@ dependencies {
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'org.twitter4j:twitter4j-stream:4.0.2'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
 }
