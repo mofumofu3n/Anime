@@ -17,6 +17,7 @@ import com.ichif1205.anime.browser.BrowserActivity;
 import com.ichif1205.anime.model.Article;
 import com.ichif1205.anime.request.ArticleRequest;
 import com.ichif1205.anime.request.RequestManager;
+import com.ichif1205.anime.request.ShowRequest;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -83,6 +84,14 @@ public class NewArticleFragment extends Fragment {
     @Subscribe
     public void onItemClick(ArticleAdapter.OnItemClick event) {
         final Article article = event.getArticle();
+
+//        final ShowRequest request = new ShowRequest
+//                .Builder()
+//                .setUrl(article.url)
+//                .setUserId("111111")
+//                .build();
+//        request.execute();
+
         BrowserActivity.start(getActivity(), article);
     }
 }
