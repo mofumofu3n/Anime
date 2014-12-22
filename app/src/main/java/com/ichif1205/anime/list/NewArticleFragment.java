@@ -49,7 +49,7 @@ public class NewArticleFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final ArticleRequest request = new ArticleRequest("http://192.168.33.10/anime/article/read");
+        final ArticleRequest request = new ArticleRequest(String.format("http://192.168.33.10/anime/article/read/%d", 0));
         getRequestQueue(getActivity()).add(request);
     }
 
