@@ -15,6 +15,7 @@ repositories {
     maven { url 'http://twitter4j.org/maven2' }
 }
 
+def PACKAGE_NAME = "com.Ichif1205.anime"
 
 android {
     compileSdkVersion 21
@@ -33,11 +34,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-
         }
     }
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
+    }
+    productFlavors {
+        develop {
+            applicationId "${PACKAGE_NAME}.develop"
+        }
+        production {
+            applicationId PACKAGE_NAME
+        }
     }
 }
 
