@@ -2,22 +2,26 @@ package com.ichif1205.anime.home;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.list.ArticleFragment;
+import com.ichif1205.anime.setting.SettingFragment;
+import com.ichif1205.anime.twitter.TwitterFragment;
 
 import butterknife.ButterKnife;
 
 
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnItemClickListener {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] mDataset;
@@ -67,8 +71,11 @@ public class HomeActivity extends ActionBarActivity {
         mDataset = getResources().getStringArray(R.array.dataset);
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        final DrawerAdapter adapter = new DrawerAdapter(mDataset);
+        adapter.setOnItemClickListener(this);
+
         final DrawerList drawerList = (DrawerList) findViewById(R.id.left_drawer);
-        drawerList.setAdapter(new DrawerAdapter(mDataset));
+        drawerList.setAdapter(adapter);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
@@ -87,4 +94,35 @@ public class HomeActivity extends ActionBarActivity {
         transaction.commit();
     }
 
+    @Override
+    public void onItemClick(String title) {
+        if (TextUtils.equals(title, mDataset[0])) {
+            replaceFragment(new ArticleFragment());
+            return;
+        }
+
+        if (TextUtils.equals(title, mDataset[1])) {
+            return;
+        }
+        if (TextUtils.equals(title, mDataset[2])) {
+            replaceFragment(new TwitterFragment());
+            return;
+        }
+        if (TextUtils.equals(title, mDataset[3])) {
+            replaceFragment(new SettingFragment());
+            return;
+        }
+
+        return;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        final FragmentManager manager = getSupportFragmentManager();
+        final Fragment oldFragment = manager.findFragmentById(R.id.container);
+
+        final FragmentTransaction transition = manager.beginTransaction();
+        transition.remove(oldFragment);
+        transition.replace(R.id.container, fragment);
+        transition.commit();
+    }
 }
