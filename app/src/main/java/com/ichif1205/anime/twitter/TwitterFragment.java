@@ -41,6 +41,13 @@ public class TwitterFragment extends Fragment {
         mStream.sample();
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mStream.clearListeners();
+        mStream.cleanUp();
+    }
+
     private StatusListener createStatusListener() {
         return new StatusListener() {
             @Override
