@@ -19,12 +19,15 @@ import com.ichif1205.anime.setting.SettingFragment;
 import com.ichif1205.anime.twitter.TwitterFragment;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnItemClickListener {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] mDataset;
+    @InjectView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +72,6 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
 
     private void setupDrawerList() {
         mDataset = getResources().getStringArray(R.array.dataset);
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         final DrawerAdapter adapter = new DrawerAdapter(mDataset);
         adapter.setOnItemClickListener(this);
@@ -77,9 +79,9 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
         final DrawerList drawerList = (DrawerList) findViewById(R.id.left_drawer);
         drawerList.setAdapter(adapter);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.app_name, R.string.app_name);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
-        drawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     private void setupActionBar() {
@@ -124,5 +126,6 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
         transition.remove(oldFragment);
         transition.replace(R.id.container, fragment);
         transition.commit();
+        mDrawerLayout.closeDrawers();
     }
 }
