@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -24,28 +25,39 @@ public class TwitterFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final Configuration configuration = new ConfigurationBuilder().build();
-        final OAuthAuthorization oauth = new OAuthAuthorization(configuration);
-        oauth.setOAuthConsumer(Consts.CONSUMER_KEY, Consts.CONSUMER_SECRET);
-        oauth.setOAuthAccessToken(new AccessToken(Consts.ACCESS_TOKEN, Consts.ACCESS_TOKEN_SECRET));
-
-        mStream = new TwitterStreamFactory().getInstance(oauth);
+        mStream = new TwitterStreamFactory().getInstance(setupOauth());
         mStream.addListener(createStatusListener());
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    private OAuthAuthorization setupOauth() {
+        final Configuration configuration = new ConfigurationBuilder().build();
+        final OAuthAuthorization oauth = new OAuthAuthorization(configuration);
+        oauth.setOAuthConsumer(Consts.CONSUMER_KEY, Consts.CONSUMER_SECRET);
+        oauth.setOAuthAccessToken(new AccessToken(Consts.ACCESS_TOKEN, Consts.ACCESS_TOKEN_SECRET));
+        return oauth;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        mStream.sample();
+        mStream.filter(createQuery("#amaburi"));
+    }
+
+    private FilterQuery createQuery(String str) {
+        final FilterQuery query = new FilterQuery();
+        query.track(new String[]{str});
+
+        return query;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mStream.clearListeners();
-        mStream.cleanUp();
+        mStream.removeListener(createStatusListener());
+        // TODO shutdownをバックグラウンドスレッドで操作しないとStrictModeに引っかかる
+        mStream.shutdown();
     }
 
     private StatusListener createStatusListener() {
