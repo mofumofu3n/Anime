@@ -12,6 +12,9 @@
         <item>設定</item>
     </string-array>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="setting">
+        <item>使い方</item>
+        <item>クレジット</item>
+    </string-array>
 
 </resources>
