@@ -27,5 +27,6 @@ public class SettingFragment extends Fragment {
         mListView.setAdapter(adapter);
 
         return view;
+
     }
 }
