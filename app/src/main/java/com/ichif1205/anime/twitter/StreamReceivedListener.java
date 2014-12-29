@@ -13,12 +13,22 @@ import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
 
 public class StreamReceivedListener implements StatusListener {
+    private final Handler mHandler;
+
+    public StreamReceivedListener(Handler handler) {
+        mHandler = handler;
+    }
+
     @Override
     public void onStatus(Status status) {
         Log.d("hoge", String.format("name: %s, text: %s", status.getUser().getScreenName(), status.getText()));
         final Twitter twitter = new Twitter(status);
-        BusHolder.get().post(new ReceivedStream(twitter));
-
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                BusHolder.get().post(new ReceivedStream(twitter));
+            }
+        });
     }
 
     @Override

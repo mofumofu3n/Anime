@@ -1,6 +1,7 @@
 package com.ichif1205.anime.twitter;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,8 @@ public class TwitterFragment extends Fragment {
 
     private TwitterStream mStream;
     private Adapter mAdapter;
+    private StreamReceivedListener mListener;
+    private static Handler mHandler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,8 +44,9 @@ public class TwitterFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
+        mListener = new StreamReceivedListener(mHandler);
         mStream = new TwitterStreamFactory().getInstance(setupOauth());
-        mStream.addListener(new StreamReceivedListener());
+        mStream.addListener(mListener);
 
         return root;
     }
@@ -72,7 +76,7 @@ public class TwitterFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mStream.removeListener(new StreamReceivedListener());
+        mStream.removeListener(mListener);
         // TODO shutdownをバックグラウンドスレッドで操作しないとStrictModeに引っかかる
         mStream.shutdown();
         BusHolder.get().unregister(this);
