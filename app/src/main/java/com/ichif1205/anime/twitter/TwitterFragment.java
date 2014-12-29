@@ -2,16 +2,19 @@ package com.ichif1205.anime.twitter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ichif1205.anime.BusHolder;
+import com.ichif1205.anime.R;
+import com.squareup.otto.Subscribe;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import twitter4j.FilterQuery;
-import twitter4j.StallWarning;
-import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-import twitter4j.StatusListener;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.auth.AccessToken;
@@ -21,14 +24,27 @@ import twitter4j.conf.ConfigurationBuilder;
 
 
 public class TwitterFragment extends Fragment {
+    @InjectView(R.id.twitter_list)
+    public RecyclerView mRecyclerView;
+
     private TwitterStream mStream;
+    private Adapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mStream = new TwitterStreamFactory().getInstance(setupOauth());
-        mStream.addListener(createStatusListener());
+        final View root = inflater.inflate(R.layout.fragment_twitter, container, false);
+        ButterKnife.inject(this, root);
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        mAdapter = new Adapter();
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mAdapter);
+
+        mStream = new TwitterStreamFactory().getInstance(setupOauth());
+        mStream.addListener(new StreamReceivedListener());
+
+        return root;
     }
 
     private OAuthAuthorization setupOauth() {
@@ -42,7 +58,8 @@ public class TwitterFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mStream.filter(createQuery("#amaburi"));
+        BusHolder.get().register(this);
+        mStream.filter(createQuery("#C87"));
     }
 
     private FilterQuery createQuery(String str) {
@@ -55,42 +72,15 @@ public class TwitterFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mStream.removeListener(createStatusListener());
+        mStream.removeListener(new StreamReceivedListener());
         // TODO shutdownをバックグラウンドスレッドで操作しないとStrictModeに引っかかる
         mStream.shutdown();
+        BusHolder.get().unregister(this);
     }
 
-    private StatusListener createStatusListener() {
-        return new StatusListener() {
-            @Override
-            public void onStatus(Status status) {
-                Log.d("hoge", String.format("name: %s, text: %s", status.getUser().getScreenName(), status.getText()));
-            }
-
-            @Override
-            public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-
-            }
-
-            @Override
-            public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-
-            }
-
-            @Override
-            public void onScrubGeo(long userId, long upToStatusId) {
-
-            }
-
-            @Override
-            public void onStallWarning(StallWarning warning) {
-
-            }
-
-            @Override
-            public void onException(Exception ex) {
-
-            }
-        };
+    @Subscribe
+    public void onReceivedStream(StreamReceivedListener.ReceivedStream stream) {
+        mAdapter.add(stream.getTwitter());
+        mAdapter.notifyDataSetChanged();
     }
 }
