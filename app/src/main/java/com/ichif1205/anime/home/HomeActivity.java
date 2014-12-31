@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 import com.ichif1205.anime.R;
+import com.ichif1205.anime.lineup.LineupFragment;
 import com.ichif1205.anime.list.ArticleFragment;
 import com.ichif1205.anime.setting.SettingFragment;
 import com.ichif1205.anime.twitter.TwitterFragment;
@@ -104,6 +105,7 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
         }
 
         if (TextUtils.equals(title, mDataset[1])) {
+            replaceFragment(new LineupFragment());
             return;
         }
         if (TextUtils.equals(title, mDataset[2])) {
