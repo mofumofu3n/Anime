@@ -1,6 +1,8 @@
 package com.ichif1205.anime.setting;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,7 +107,16 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         private void bind(String title) {
-            titleView.setText(title);
+            final Context context = titleView.getContext();
+
+            final SettingPreference pref = new SettingPreference(context);
+            final String location = pref.getLocationName();
+
+            if (TextUtils.isEmpty(location)) {
+                titleView.setText(title);
+            } else {
+                titleView.setText(location);
+            }
         }
 
         @Override

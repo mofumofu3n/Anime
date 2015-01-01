@@ -6,7 +6,8 @@ import android.content.SharedPreferences;
 public class SettingPreference {
     private static final String KEY = "pref_setting";
 
-    private static final String KEY_LOCATION = "location";
+    private static final String KEY_LOCATION_ID = "location_id";
+    private static final String KEY_LOCATION_NAME = "location_name";
 
     private final SharedPreferences mPref;
 
@@ -15,13 +16,25 @@ public class SettingPreference {
         mPref = context.getSharedPreferences(KEY, Context.MODE_PRIVATE);
     }
 
-    public void setLocation(String location) {
-        final SharedPreferences.Editor editor = mPref.edit();
-        editor.putString(KEY_LOCATION, location);
-        editor.commit();
+    public void setLocationId(String locationId) {
+        putString(KEY_LOCATION_ID, locationId);
     }
 
-    public String getLocation() {
-        return mPref.getString(KEY_LOCATION, null);
+    public String getLocationId() {
+        return mPref.getString(KEY_LOCATION_ID, null);
+    }
+
+    public void setLocationName(String locationName) {
+        putString(KEY_LOCATION_NAME, locationName);
+    }
+
+    public String getLocationName() {
+        return mPref.getString(KEY_LOCATION_NAME, null);
+    }
+
+    private void putString(String key, String value) {
+        final SharedPreferences.Editor editor = mPref.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 }
