@@ -1,6 +1,7 @@
 package com.ichif1205.anime.setting;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,37 +13,112 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final String[] mDataset;
+    static final int TYPE_LOCATION = 0;
+    static final int TYPE_USAGE = 1;
+    static final int TYPE_LICENSE = 2;
 
-    public Adapter(String[] dataset) {
+    private final SparseArray<String> mDataset;
+
+    public Adapter(SparseArray<String> dataset) {
         mDataset = dataset;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
         final View view = inflater.inflate(R.layout.layout_setting, parent, false);
 
-        return new Usage(view);
+        if (viewType == TYPE_LOCATION) {
+            return new LocationHolder(view);
+        }
+
+        if (viewType == TYPE_USAGE) {
+            return new UsageHolder(view);
+        }
+
+        if (viewType == TYPE_LICENSE) {
+            return new LicenseHolder(view);
+        }
+        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((Usage) holder).bind(mDataset[position]);
+        final int type = getItemViewType(position);
+        final String title = mDataset.get(type);
+
+        if (type == TYPE_USAGE) {
+            ((UsageHolder) holder).bind(title);
+            return;
+        }
+
+        if (type == TYPE_LOCATION) {
+            ((LocationHolder) holder).bind(title);
+            return;
+        }
+
+        if (type == TYPE_LICENSE) {
+            ((LicenseHolder) holder).bind(title);
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
-    public class Usage extends RecyclerView.ViewHolder implements View.OnClickListener {
+    @Override
+    public int getItemViewType(int position) {
+        return mDataset.keyAt(position);
+    }
+
+    public class UsageHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @InjectView(R.id.title)
         TextView titleView;
 
 
-        public Usage(View itemView) {
+        public UsageHolder(View itemView) {
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        private void bind(String title) {
+            titleView.setText(title);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    }
+
+    public class LocationHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @InjectView(R.id.title)
+        TextView titleView;
+
+        public LocationHolder(View itemView) {
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        private void bind(String title) {
+            titleView.setText(title);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    }
+
+    public class LicenseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @InjectView(R.id.title)
+        TextView titleView;
+
+        public LicenseHolder(View itemView) {
             super(itemView);
             ButterKnife.inject(this, itemView);
             itemView.setOnClickListener(this);
