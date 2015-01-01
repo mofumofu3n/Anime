@@ -1,6 +1,8 @@
 package com.ichif1205.anime.setting;
 
 import android.content.Context;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ichif1205.anime.R;
+import com.ichif1205.anime.setting.location.LocationDialog;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -20,6 +23,7 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     static final int TYPE_LICENSE = 2;
 
     private final SparseArray<String> mDataset;
+    private OnItemClickListener mListener;
 
     public Adapter(SparseArray<String> dataset) {
         mDataset = dataset;
@@ -75,6 +79,18 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mDataset.keyAt(position);
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    interface OnItemClickListener {
+        void onUsageClick();
+
+        void onLocationClick();
+
+        void onLicenseClick();
+    }
+
     public class UsageHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @InjectView(R.id.title)
         TextView titleView;
@@ -92,7 +108,10 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-
+            if (mListener == null) {
+                return;
+            }
+            mListener.onUsageClick();
         }
     }
 
@@ -121,7 +140,10 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-
+            if (mListener == null) {
+                return;
+            }
+            mListener.onLocationClick();
         }
     }
 
@@ -141,7 +163,10 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-
+            if (mListener == null) {
+                return;
+            }
+            mListener.onLicenseClick();
         }
     }
 }
