@@ -17,20 +17,23 @@ public class LocationDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Context context = getActivity();
-        final String[] locationNames = context.getResources().getStringArray(R.array.lineup_key);
+        final String[] locationNames = context.getResources().getStringArray(R.array.lineup_name);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("放送地域を選択してください");
-        builder.setItems(locationNames, new DialogInterface.OnClickListener() {
+        builder.setItems(locationNames, createOnClickListener(context, locationNames));
+        return builder.create();
+    }
+
+    private DialogInterface.OnClickListener createOnClickListener(final Context context, final String[] locationNames) {
+        return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final String[] locations = context.getResources().getStringArray(R.array.lineup_query);
+                final String[] locationIds = context.getResources().getStringArray(R.array.lineup_id);
                 final SettingPreference pref = new SettingPreference(context);
-                pref.setLocationId(locations[which]);
+                pref.setLocationId(locationIds[which]);
                 pref.setLocationName(locationNames[which]);
-
             }
-        });
-        return builder.create();
+        };
     }
 }
