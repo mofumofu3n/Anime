@@ -18,7 +18,7 @@
         <item>著作権情報</item>
     </string-array>
 
-    <string-array name="lineup_query">
+    <string-array name="lineup_id">
         <item>hokkaidou</item>
         <item>aomori</item>
         <item>iwate</item>
@@ -68,7 +68,7 @@
         <item>okinawa</item>
     </string-array>
 
-    <string-array name="lineup_key">
+    <string-array name="lineup_name">
         <item>北海道</item>
         <item>青森県</item>
         <item>岩手県</item>
