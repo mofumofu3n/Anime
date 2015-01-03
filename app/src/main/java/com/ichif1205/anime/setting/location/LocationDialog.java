@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.setting.SettingPreference;
@@ -33,7 +34,18 @@ public class LocationDialog extends DialogFragment {
                 final SettingPreference pref = new SettingPreference(context);
                 pref.setLocationId(locationIds[which]);
                 pref.setLocationName(locationNames[which]);
+
+                final Fragment target = getTargetFragment();
+
+                // 地域変更を通知
+                if (target instanceof OnChangeListener) {
+                    ((OnChangeListener) target).onChangeLocation();
+                }
             }
         };
+    }
+
+    public interface OnChangeListener {
+        void onChangeLocation();
     }
 }

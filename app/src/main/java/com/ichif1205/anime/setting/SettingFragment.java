@@ -1,5 +1,6 @@
 package com.ichif1205.anime.setting;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -16,7 +17,7 @@ import com.ichif1205.anime.setting.location.LocationDialog;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SettingFragment extends Fragment implements Adapter.OnItemClickListener {
+public class SettingFragment extends Fragment implements Adapter.OnItemClickListener, LocationDialog.OnChangeListener {
     private static final String TAG = SettingPreference.class.getSimpleName();
 
     @InjectView(R.id.setting_list)
@@ -30,6 +31,11 @@ public class SettingFragment extends Fragment implements Adapter.OnItemClickList
         DATASET.append(Adapter.TYPE_LOCATION, "地域設定");
         DATASET.append(Adapter.TYPE_USAGE, "使い方");
         DATASET.append(Adapter.TYPE_LICENSE, "著作権情報");
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     @Override
@@ -53,11 +59,17 @@ public class SettingFragment extends Fragment implements Adapter.OnItemClickList
     public void onLocationClick() {
         final FragmentManager manager = getFragmentManager();
         final DialogFragment fragment = new LocationDialog();
+        fragment.setTargetFragment(this, -1);
         fragment.show(manager, TAG);
     }
 
     @Override
     public void onLicenseClick() {
 
+    }
+
+    @Override
+    public void onChangeLocation() {
+        mAdapter.notifyDataSetChanged();
     }
 }
