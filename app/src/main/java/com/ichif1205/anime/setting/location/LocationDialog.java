@@ -13,6 +13,7 @@ import com.ichif1205.anime.R;
 import com.ichif1205.anime.setting.SettingPreference;
 
 public class LocationDialog extends DialogFragment {
+    public static final String TAG = LocationDialog.class.getSimpleName();
 
     @NonNull
     @Override
