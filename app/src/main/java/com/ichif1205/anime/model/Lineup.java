@@ -6,7 +6,7 @@ import org.json.JSONObject;
 public class Lineup {
     private static final String TITLE = "title";
     private static final String URL = "url";
-    private static final String TIME = "time;";
+    private static final String TIME = "time";
     private static final String STATION = "station";
     private static final String STATE = "state";
     private static final String NEXT = "next";
