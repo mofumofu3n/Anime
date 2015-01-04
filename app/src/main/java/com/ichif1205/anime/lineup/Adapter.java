@@ -7,15 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ichif1205.anime.R;
+import com.ichif1205.anime.model.Lineup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final String[] mDataset;
+    private ArrayList<Lineup> mDataset;
 
-    Adapter(String[] dataset) {
-        mDataset = dataset;
+    Adapter() {
+        mDataset = new ArrayList<>();
     }
 
     @Override
@@ -29,12 +33,16 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((LineupItem) holder).bind(mDataset[position]);
+        ((LineupItem) holder).bind(mDataset.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
+    }
+
+    public void add(List<Lineup> list) {
+        mDataset.addAll(list);
     }
 
     public class LineupItem extends RecyclerView.ViewHolder {
@@ -46,8 +54,8 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ButterKnife.inject(this, itemView);
         }
 
-        public void bind(String title) {
-            mTitleView.setText(title);
+        public void bind(Lineup lineup) {
+            mTitleView.setText(lineup.title);
         }
     }
 }

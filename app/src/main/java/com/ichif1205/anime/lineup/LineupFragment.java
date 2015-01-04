@@ -15,9 +15,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.RequestQueue;
+import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
+import com.ichif1205.anime.model.Lineup;
+import com.ichif1205.anime.request.LineupRequest;
+import com.ichif1205.anime.request.RequestManager;
 import com.ichif1205.anime.setting.SettingPreference;
 import com.ichif1205.anime.setting.location.LocationDialog;
+import com.squareup.otto.Subscribe;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -34,6 +42,7 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
     @InjectView(R.id.lineup_list)
     public RecyclerView mRecyclerView;
 
+    private Adapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,8 +51,8 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        final Adapter adapter = new Adapter(DUMMY);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new Adapter();
+        mRecyclerView.setAdapter(mAdapter);
 
         setupTitle();
         return view;
@@ -53,10 +62,21 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
     public void onResume() {
         super.onResume();
 
-        if (!isSettingLocation()) {
+        final Context context = getActivity();
+        final SettingPreference pref = new SettingPreference(context);
+
+        if (!isSettingLocation(pref)) {
             showSettingLocationFragment();
             return;
         }
+        request(context, pref);
+        BusHolder.get().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusHolder.get().unregister(this);
     }
 
     private void setupTitle() {
@@ -69,10 +89,7 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
      *
      * @return 設定済みの場合、true
      */
-    private boolean isSettingLocation() {
-        final Context context = getActivity();
-
-        final SettingPreference pref = new SettingPreference(context);
+    private boolean isSettingLocation(SettingPreference pref) {
         return !TextUtils.isEmpty(pref.getLocationId());
     }
 
@@ -83,8 +100,28 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
         fragment.show(manager, LocationDialog.TAG);
     }
 
+    private void request(Context context, SettingPreference pref) {
+        final LineupRequest request = new LineupRequest(String.format("http://192.168.33.10/anime/lineup/location/%s", pref.getLocationId()));
+        getRequestQueue(getActivity()).add(request);
+    }
+
+    private RequestQueue getRequestQueue(Context context) {
+        return RequestManager.getInstance().getRequestQueue(context);
+    }
+
     @Override
     public void onChangeLocation() {
-       
+
+    }
+
+    @Subscribe
+    public void onResponse(LineupRequest.SuccessEvent event) {
+        final List<Lineup> list = event.getList();
+        mAdapter.add(list);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void onError(LineupRequest.ErrorEvent event) {
+
     }
 }
