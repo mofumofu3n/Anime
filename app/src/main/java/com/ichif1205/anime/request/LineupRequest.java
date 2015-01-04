@@ -1,12 +1,11 @@
 package com.ichif1205.anime.request;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.model.Lineup;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,27 +18,25 @@ public class LineupRequest extends JsonObjectRequest {
         super(Method.GET, url, null, null, null);
     }
 
-    @Override
-    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-        response.toString();
-        return super.parseNetworkResponse(response);
-    }
 
     @Override
     protected void deliverResponse(JSONObject response) {
         final ArrayList<Lineup> lineupList = new ArrayList<>();
 
-        final int length = response.length();
-        for (int i = 0; i < length; i++) {
-            try {
-//                final JSONObject row = response
-                final JSONObject row = null;
+        try {
+            final JSONObject responses = response.getJSONObject("response");
+            final JSONArray items = responses.getJSONArray("item");
+
+            final int length = items.length();
+            for (int i = 0; i < length; i++) {
+                final JSONObject row = items.getJSONObject(i);
                 final Lineup lineup = new Lineup(row);
                 lineupList.add(lineup);
-            } catch (JSONException e) {
-                deliverError(new VolleyError(e));
-                return;
             }
+
+        } catch (JSONException e) {
+            deliverError(new VolleyError(e));
+            return;
         }
         BusHolder.get().post(new SuccessEvent(lineupList));
     }
