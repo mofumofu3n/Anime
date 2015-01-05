@@ -1,5 +1,6 @@
 package com.ichif1205.anime.lineup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,6 +38,12 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
     private Adapter mAdapter;
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        BusHolder.get().register(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_lineup, container, false);
         ButterKnife.inject(this, view);
@@ -62,7 +69,6 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
             return;
         }
         request(pref);
-        BusHolder.get().register(this);
     }
 
     @Override
@@ -103,7 +109,12 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
 
     @Override
     public void onChangeLocation() {
+        if (getActivity() == null) {
+            return;
+        }
 
+        final SettingPreference pref = new SettingPreference(getActivity());
+        request(pref);
     }
 
     @Subscribe
