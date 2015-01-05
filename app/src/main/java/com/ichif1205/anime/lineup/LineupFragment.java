@@ -31,14 +31,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class LineupFragment extends Fragment implements LocationDialog.OnChangeListener {
-    private static final String[] DUMMY = {
-            "ダミー1",
-            "ダミー2",
-            "ダミー3",
-            "ダミー4",
-            "ダミー5"
-    };
-
     @InjectView(R.id.lineup_list)
     public RecyclerView mRecyclerView;
 
@@ -69,7 +61,7 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
             showSettingLocationFragment();
             return;
         }
-        request(context, pref);
+        request(pref);
         BusHolder.get().register(this);
     }
 
@@ -100,7 +92,7 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
         fragment.show(manager, LocationDialog.TAG);
     }
 
-    private void request(Context context, SettingPreference pref) {
+    private void request(SettingPreference pref) {
         final LineupRequest request = new LineupRequest(String.format("http://192.168.33.10/anime/lineup/location/%s", pref.getLocationId()));
         getRequestQueue(getActivity()).add(request);
     }
