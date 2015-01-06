@@ -36,7 +36,7 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
     @InjectView(R.id.lineup_list)
     public RecyclerView mRecyclerView;
 
-    @InjectView(R.id.progress)
+    @InjectView(R.id.loading)
     public ProgressBar mProgressBar;
 
     private Adapter mAdapter;
