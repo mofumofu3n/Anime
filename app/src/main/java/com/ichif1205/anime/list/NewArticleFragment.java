@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.ichif1205.anime.BusHolder;
@@ -27,7 +28,11 @@ import butterknife.InjectView;
 
 public class NewArticleFragment extends Fragment {
     @InjectView(R.id.article_list)
-    RecyclerView mRecyclerView;
+    public RecyclerView mRecyclerView;
+
+    @InjectView(R.id.loading)
+    public ProgressBar mLoading;
+
     private ArticleAdapter mAdapter;
 
     @Override
@@ -44,13 +49,13 @@ public class NewArticleFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         final ArticleRequest request = new ArticleRequest(String.format("http://192.168.33.10/anime/article/read/%d", 0));
         getRequestQueue(getActivity()).add(request);
+        loading();
     }
 
     private RequestQueue getRequestQueue(Context context) {
@@ -69,11 +74,22 @@ public class NewArticleFragment extends Fragment {
         super.onPause();
     }
 
+    private void loading() {
+        mRecyclerView.setVisibility(View.GONE);
+        mLoading.setVisibility(View.VISIBLE);
+    }
+
+    private void showSuccess() {
+        mLoading.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
     @Subscribe
     public void onResponse(ArticleRequest.SuccessEvent event) {
         final List<Article> articleList = event.getList();
         mAdapter.add(articleList);
         mAdapter.notifyDataSetChanged();
+        showSuccess();
     }
 
     @Subscribe
