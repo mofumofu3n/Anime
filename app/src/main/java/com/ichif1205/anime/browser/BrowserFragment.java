@@ -51,7 +51,7 @@ public class BrowserFragment extends Fragment {
         mWebView.setWebViewClient(mClient);
         mWebView.setWebChromeClient(mChrome);
 
-        mProgress = (ProgressBar) rootView.findViewById(R.id.progress);
+        mProgress = (ProgressBar) rootView.findViewById(R.id.loading);
 
         return rootView;
     }

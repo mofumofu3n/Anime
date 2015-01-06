@@ -5,7 +5,7 @@
     tools:context=".browser.BrowserActivity$PlaceholderFragment">
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/loading"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/progress" />
+        android:layout_below="@id/loading" />
 
     <LinearLayout
         android:id="@+id/adView"
