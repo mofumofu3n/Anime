@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.ichif1205.anime.BusHolder;
@@ -34,6 +35,9 @@ import butterknife.InjectView;
 public class LineupFragment extends Fragment implements LocationDialog.OnChangeListener {
     @InjectView(R.id.lineup_list)
     public RecyclerView mRecyclerView;
+
+    @InjectView(R.id.progress)
+    public ProgressBar mProgressBar;
 
     private Adapter mAdapter;
 
@@ -69,6 +73,7 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
             return;
         }
         request(pref);
+        loading();
     }
 
     @Override
@@ -115,6 +120,17 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
 
         final SettingPreference pref = new SettingPreference(getActivity());
         request(pref);
+        loading();
+    }
+
+    private void loading() {
+        mRecyclerView.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void showSuccess() {
+        mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Subscribe
@@ -122,6 +138,7 @@ public class LineupFragment extends Fragment implements LocationDialog.OnChangeL
         final List<Lineup> list = event.getList();
         mAdapter.add(list);
         mAdapter.notifyDataSetChanged();
+        showSuccess();
     }
 
     public void onError(LineupRequest.ErrorEvent event) {
