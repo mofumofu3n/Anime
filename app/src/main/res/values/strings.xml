@@ -5,10 +5,18 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- ドロワーメニュー -->
+    <string name="drawer_article">記事</string>
+    <string name="drawer_tvlineup">番組表</string>
+    <string name="drawer_twitter">Twitter</string>
+    <string name="drawer_new_anime">2015年冬アニメ</string>
+    <string name="drawer_setting">設定</string>
+
     <string-array name="dataset">
         <item>記事</item>
         <item>番組表</item>
         <item>Twitter</item>
+        <item>2015年冬アニメ</item>
         <item>設定</item>
     </string-array>
 
