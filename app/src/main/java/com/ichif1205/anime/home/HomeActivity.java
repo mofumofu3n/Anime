@@ -8,16 +8,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 import com.ichif1205.anime.R;
-import com.ichif1205.anime.lineup.LineupFragment;
 import com.ichif1205.anime.list.ArticleFragment;
-import com.ichif1205.anime.setting.SettingFragment;
-import com.ichif1205.anime.twitter.TwitterFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,10 +21,12 @@ import butterknife.InjectView;
 
 public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnItemClickListener {
 
-    private ActionBarDrawerToggle mDrawerToggle;
-    private String[] mDataset;
     @InjectView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    private DrawerAdapter mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +70,11 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
     }
 
     private void setupDrawerList() {
-        mDataset = getResources().getStringArray(R.array.dataset);
-
-        final DrawerAdapter adapter = new DrawerAdapter(mDataset);
-        adapter.setOnItemClickListener(this);
+        mAdapter = new DrawerAdapter(this);
+        mAdapter.setOnItemClickListener(this);
 
         final DrawerList drawerList = (DrawerList) findViewById(R.id.left_drawer);
-        drawerList.setAdapter(adapter);
+        drawerList.setAdapter(mAdapter);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.app_name, R.string.app_name);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
@@ -98,26 +94,9 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
     }
 
     @Override
-    public void onItemClick(String title) {
-        if (TextUtils.equals(title, mDataset[0])) {
-            replaceFragment(new ArticleFragment());
-            return;
-        }
-
-        if (TextUtils.equals(title, mDataset[1])) {
-            replaceFragment(new LineupFragment());
-            return;
-        }
-        if (TextUtils.equals(title, mDataset[2])) {
-            replaceFragment(new TwitterFragment());
-            return;
-        }
-        if (TextUtils.equals(title, mDataset[3])) {
-            replaceFragment(new SettingFragment());
-            return;
-        }
-
-        return;
+    public void onItemClick(int position) {
+        final Fragment fragment = mAdapter.getItem(position);
+        replaceFragment(fragment);
     }
 
     private void replaceFragment(Fragment fragment) {

@@ -1,19 +1,34 @@
 package com.ichif1205.anime.home;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ichif1205.anime.R;
+import com.ichif1205.anime.browser.BrowserFragment;
+import com.ichif1205.anime.lineup.LineupFragment;
+import com.ichif1205.anime.list.ArticleFragment;
+import com.ichif1205.anime.setting.SettingFragment;
+import com.ichif1205.anime.twitter.TwitterFragment;
 
 public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final String[] mDataset;
+    private Resources mResources;
+
+    private final SparseArray<Fragment> mDrawerList;
+
     private OnItemClickListener mListener;
 
-    public DrawerAdapter(String[] dataset) {
-        mDataset = dataset;
+    public DrawerAdapter(Context context) {
+        mResources = context.getResources();
+
+        mDrawerList = new SparseArray<>();
+        initializedDrawerList();
     }
 
     @Override
@@ -26,21 +41,36 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final int titleId = mDrawerList.keyAt(position);
+
         final ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setTitle(mDataset[position]);
+        viewHolder.setTitle(mResources.getString(titleId));
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDrawerList.size();
+    }
+
+    public Fragment getItem(int position) {
+        final int key = mDrawerList.keyAt(position);
+        return mDrawerList.get(key);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
+    private void initializedDrawerList() {
+        mDrawerList.put(R.string.drawer_article, new ArticleFragment());
+        mDrawerList.put(R.string.drawer_tvlineup, new LineupFragment());
+        mDrawerList.put(R.string.drawer_twitter, new TwitterFragment());
+        mDrawerList.put(R.string.drawer_new_anime, new BrowserFragment());
+        mDrawerList.put(R.string.drawer_setting, new SettingFragment());
+    }
+
     public interface OnItemClickListener {
-        void onItemClick(String title);
+        void onItemClick(int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -62,7 +92,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return;
             }
 
-            mListener.onItemClick((String) (mTitleView.getText()));
+            mListener.onItemClick(getPosition());
         }
     }
 }
