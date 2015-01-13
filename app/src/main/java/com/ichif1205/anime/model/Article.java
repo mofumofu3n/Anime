@@ -14,10 +14,12 @@ public class Article {
     private static final String TITLE = "title";
     private static final String URL = "url";
     private static final String IMAGE = "image";
-    private static final String FEED = "feed_name";
+    private static final String FEED = "feed";
     private static final String DATE = "published_date";
     private static final String PUBLISHED_AT = "publishedAt";
     private static final String CLICK = "click";
+
+    private static final String FEED_TITLE = "title";
 
     private static final String DATE_FORMAT = "MM/dd kk:mm";
 
@@ -26,6 +28,7 @@ public class Article {
     public String url;
     public String image;
     public String feedName;
+    public ParseObject feed;
     public String date;
     public int click;
 
@@ -35,7 +38,7 @@ public class Article {
         article.title = obj.getString(TITLE);
         article.url = obj.getString(URL);
         article.image = obj.getString(IMAGE);
-        article.feedName = "";
+        article.feed = obj.getParseObject(FEED);
         article.date = article.changeDateFormat(Long.valueOf(obj.getString(PUBLISHED_AT)));
 
         return article;
