@@ -40,3 +40,4 @@ proguard/
 # twitter
 app/src/main/java/com/ichif1205/anime/twitter/Consts.java
 
+ParseConfig.java
