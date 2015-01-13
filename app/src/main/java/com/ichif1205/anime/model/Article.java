@@ -3,16 +3,20 @@ package com.ichif1205.anime.model;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 
+import com.parse.ParseObject;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Article {
     private static final String ID = "id";
+    private static final String OBJECT_ID = "objectId";
     private static final String TITLE = "title";
     private static final String URL = "url";
     private static final String IMAGE = "image";
     private static final String FEED = "feed_name";
     private static final String DATE = "published_date";
+    private static final String PUBLISHED_AT = "publishedAt";
     private static final String CLICK = "click";
 
     private static final String DATE_FORMAT = "MM/dd kk:mm";
@@ -24,6 +28,18 @@ public class Article {
     public String feedName;
     public String date;
     public int click;
+
+    public static Article parse(ParseObject obj) {
+        final Article article = new Article();
+        article.id = obj.getString(OBJECT_ID);
+        article.title = obj.getString(TITLE);
+        article.url = obj.getString(URL);
+        article.image = obj.getString(IMAGE);
+        article.feedName = "";
+        article.date = article.changeDateFormat(Long.valueOf(obj.getString(PUBLISHED_AT)));
+
+        return article;
+    }
 
     public static Article parse(JSONObject obj) {
         Article article = null;

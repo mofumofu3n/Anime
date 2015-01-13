@@ -17,6 +17,7 @@ import com.ichif1205.anime.R;
 import com.ichif1205.anime.browser.BrowserActivity;
 import com.ichif1205.anime.model.Article;
 import com.ichif1205.anime.request.ArticleRequest;
+import com.ichif1205.anime.request.ParseArticleRequest;
 import com.ichif1205.anime.request.RequestManager;
 import com.ichif1205.anime.request.ShowRequest;
 import com.squareup.otto.Subscribe;
@@ -53,8 +54,10 @@ public class NewArticleFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final ArticleRequest request = new ArticleRequest(String.format("http://192.168.33.10/anime/article/read/%d", 0));
-        getRequestQueue(getActivity()).add(request);
+//        final ArticleRequest request = new ArticleRequest(String.format("http://192.168.33.10/anime/article/read/%d", 0));
+//        getRequestQueue(getActivity()).add(request);
+        final ParseArticleRequest request = new ParseArticleRequest();
+        request.find();
         loading();
     }
 
@@ -85,7 +88,7 @@ public class NewArticleFragment extends Fragment {
     }
 
     @Subscribe
-    public void onResponse(ArticleRequest.SuccessEvent event) {
+    public void onResponse(ParseArticleRequest.SuccessEvent event) {
         final List<Article> articleList = event.getList();
         mAdapter.add(articleList);
         mAdapter.notifyDataSetChanged();
@@ -93,7 +96,7 @@ public class NewArticleFragment extends Fragment {
     }
 
     @Subscribe
-    public void onError(ArticleRequest.ErrorEvent event) {
+    public void onError(ParseArticleRequest.ErrorEvent event) {
 
     }
 
