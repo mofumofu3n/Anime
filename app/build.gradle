@@ -64,4 +64,5 @@ dependencies {
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'org.twitter4j:twitter4j-stream:4.0.2'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.parse.bolts:bolts-android:1.1.4'
 }
