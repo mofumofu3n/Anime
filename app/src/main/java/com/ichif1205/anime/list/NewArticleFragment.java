@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
@@ -35,6 +36,7 @@ public class NewArticleFragment extends Fragment {
     @InjectView(R.id.loading)
     public ProgressBar mLoading;
 
+    private LinearLayoutManager mLayoutManager;
     private ArticleAdapter mAdapter;
 
     @Override
@@ -44,11 +46,13 @@ public class NewArticleFragment extends Fragment {
         ButterKnife.inject(this, view);
 
         mRefreshLayout.setOnRefreshListener(createRefreshListener());
+        mLayoutManager = new LinearLayoutManager(getActivity());
 
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new ArticleAdapter(RequestManager.getInstance().getImageLoader(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setOnScrollListener(createScrollListener());
 
         return view;
     }
@@ -98,6 +102,36 @@ public class NewArticleFragment extends Fragment {
     private void showSuccess() {
         mLoading.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 別クラスにする
+     * @return onScrollListener
+     */
+    private RecyclerView.OnScrollListener createScrollListener() {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                final int visibleItemCount = mLayoutManager.getChildCount();
+                final int totalItemCount = mLayoutManager.getItemCount();
+                final int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+                final int firstFullyVisiblePosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+
+
+                // 一番目の記事が完全に見えている時だけ、RefreshLayoutを有効にする
+                if (firstFullyVisiblePosition == 0) {
+                    mRefreshLayout.setEnabled(true);
+                } else {
+                    mRefreshLayout.setEnabled(false);
+                }
+
+                final int deltaPosition = totalItemCount - (firstVisibleItemPosition + visibleItemCount);
+
+                if (deltaPosition == 3) {
+                    // ReloadPosition
+                }
+            }
+        };
     }
 
     @Subscribe
