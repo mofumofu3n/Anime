@@ -31,6 +31,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mList = new ArrayList<>();
     }
 
+    public void addFirst(List<Article> list) {
+        mList.clear();
+        mList.addAll(list);
+    }
+
     public void add(List<Article> list) {
         mList.addAll(list);
     }

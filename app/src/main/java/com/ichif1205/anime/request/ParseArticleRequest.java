@@ -16,6 +16,11 @@ public class ParseArticleRequest {
      */
     private static final int MAX_CACHE_TIME_MILLIS = 10 * 60 * 1000;
 
+    /**
+     * 20件
+     */
+    private static final int QUERY_LIMIT = 20;
+
     private static final String CLASS_NAME = "Article";
     private static final String COL_PUBLISHED_AD = "publishedAt";
 
@@ -24,22 +29,36 @@ public class ParseArticleRequest {
     public ParseArticleRequest() {
         mQuery = ParseQuery.getQuery(CLASS_NAME);
         mQuery.setMaxCacheAge(MAX_CACHE_TIME_MILLIS);
+        mQuery.orderByDescending(COL_PUBLISHED_AD);
     }
 
     public void find() {
-        mQuery.orderByDescending(COL_PUBLISHED_AD);
-
         if (mQuery.hasCachedResult()) {
             mQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ONLY);
         } else {
             mQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
         }
-
-        // キャッシュから読み込み後、APIアクセスし、結果を返す
-        mQuery.findInBackground(createCallback());
+        find(0, QUERY_LIMIT, false);
     }
 
-    private FindCallback<ParseObject> createCallback() {
+    public void forceFind() {
+        mQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        find(0, QUERY_LIMIT, false);
+    }
+
+    public void findPaging(int offset) {
+        mQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
+        find(offset, QUERY_LIMIT, true);
+    }
+
+    private void find(int offset, int limit, boolean isPaging) {
+        mQuery.setSkip(offset);
+        mQuery.setLimit(limit);
+
+        mQuery.findInBackground(createCallback(isPaging));
+    }
+
+    private FindCallback<ParseObject> createCallback(final boolean isPaging) {
         return new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
@@ -54,20 +73,26 @@ public class ParseArticleRequest {
 
                 final ArticleParser parser = new ArticleParser(parseObjects);
                 final List<Article> articleList = parser.parse();
-                BusHolder.get().post(new SuccessEvent(articleList));
+                BusHolder.get().post(new SuccessEvent(articleList, isPaging));
             }
         };
     }
 
     public class SuccessEvent {
         private final List<Article> mList;
+        private final boolean mPaging;
 
-        public SuccessEvent(List<Article> list) {
+        public SuccessEvent(List<Article> list, boolean isPaging) {
             mList = list;
+            mPaging = isPaging;
         }
 
         public List<Article> getList() {
             return mList;
+        }
+
+        public boolean isPaging() {
+            return mPaging;
         }
     }
 

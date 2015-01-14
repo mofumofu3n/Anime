@@ -1,7 +1,6 @@
 package com.ichif1205.anime.list;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
@@ -82,14 +80,8 @@ public class NewArticleFragment extends Fragment {
         return new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
-                // TODO あとで更新処理入れる
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRefreshLayout.setRefreshing(false);
-                    }
-                }, 3000);
+                final ParseArticleRequest request = new ParseArticleRequest();
+                request.forceFind();
             }
         };
     }
@@ -102,6 +94,7 @@ public class NewArticleFragment extends Fragment {
     private void showSuccess() {
         mLoading.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+        mRefreshLayout.setRefreshing(false);
     }
 
     /**
@@ -128,7 +121,8 @@ public class NewArticleFragment extends Fragment {
                 final int deltaPosition = totalItemCount - (firstVisibleItemPosition + visibleItemCount);
 
                 if (deltaPosition == 3) {
-                    // ReloadPosition
+                    final ParseArticleRequest request = new ParseArticleRequest();
+                    request.findPaging(totalItemCount);
                 }
             }
         };
@@ -136,8 +130,13 @@ public class NewArticleFragment extends Fragment {
 
     @Subscribe
     public void onResponse(ParseArticleRequest.SuccessEvent event) {
+        final boolean isPaging = event.isPaging();
         final List<Article> articleList = event.getList();
-        mAdapter.add(articleList);
+        if (isPaging) {
+            mAdapter.add(articleList);
+        } else {
+            mAdapter.addFirst(articleList);
+        }
         mAdapter.notifyDataSetChanged();
         showSuccess();
     }
