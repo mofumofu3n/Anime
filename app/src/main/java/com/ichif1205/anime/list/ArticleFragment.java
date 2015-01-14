@@ -29,7 +29,7 @@ public class ArticleFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_article, container, false);
         ButterKnife.inject(this, view);
 
-        final ArticlePagerAdapter adapter = new ArticlePagerAdapter(getActivity().getSupportFragmentManager());
+        final ArticlePagerAdapter adapter = new ArticlePagerAdapter(getChildFragmentManager());
         mPager.setAdapter(adapter);
 
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()

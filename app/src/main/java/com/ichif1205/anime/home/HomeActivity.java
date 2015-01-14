@@ -101,10 +101,8 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
 
     private void replaceFragment(Fragment fragment) {
         final FragmentManager manager = getSupportFragmentManager();
-        final Fragment oldFragment = manager.findFragmentById(R.id.container);
 
         final FragmentTransaction transition = manager.beginTransaction();
-        transition.remove(oldFragment);
         transition.replace(R.id.container, fragment);
         transition.commit();
         mDrawerLayout.closeDrawers();
