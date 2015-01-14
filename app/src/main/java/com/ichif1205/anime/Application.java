@@ -1,5 +1,6 @@
 package com.ichif1205.anime;
 
+import com.ichif1205.anime.request.ParseConfig;
 import com.parse.Parse;
 
 public class Application extends android.app.Application {

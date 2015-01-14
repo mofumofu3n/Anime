@@ -1,4 +1,4 @@
-package com.ichif1205.anime;
+package com.ichif1205.anime.request;
 
 /**
  * 利用する際はファイル名、クラス名を<em>ParseConfig</em>に変更する
