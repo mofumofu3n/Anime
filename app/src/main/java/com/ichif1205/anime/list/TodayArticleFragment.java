@@ -15,11 +15,8 @@ import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.browser.BrowserActivity;
 import com.ichif1205.anime.model.Article;
-import com.ichif1205.anime.request.ArticleRequest;
 import com.ichif1205.anime.request.RequestManager;
 import com.squareup.otto.Subscribe;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -68,17 +65,17 @@ public class TodayArticleFragment extends Fragment {
         super.onPause();
     }
 
-    @Subscribe
-    public void onResponse(ArticleRequest.SuccessEvent event) {
-        final List<Article> articleList = event.getList();
-        mAdapter.add(articleList);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Subscribe
-    public void onError(ArticleRequest.ErrorEvent event) {
-
-    }
+//    @Subscribe
+//    public void onResponse(ArticleRequest.SuccessEvent event) {
+//        final List<Article> articleList = event.getList();
+//        mAdapter.add(articleList);
+//        mAdapter.notifyDataSetChanged();
+//    }
+//
+//    @Subscribe
+//    public void onError(ArticleRequest.ErrorEvent event) {
+//
+//    }
 
     @Subscribe
     public void onItemClick(ArticleAdapter.OnItemClick event) {
