@@ -1,9 +1,10 @@
 package com.ichif1205.anime.list;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,15 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.android.volley.RequestQueue;
 import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.browser.BrowserActivity;
 import com.ichif1205.anime.model.Article;
-import com.ichif1205.anime.request.ArticleRequest;
 import com.ichif1205.anime.request.ParseArticleRequest;
 import com.ichif1205.anime.request.RequestManager;
-import com.ichif1205.anime.request.ShowRequest;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -28,6 +26,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class NewArticleFragment extends Fragment {
+    @InjectView(R.id.swipe_refresh)
+    public SwipeRefreshLayout mRefreshLayout;
+
     @InjectView(R.id.article_list)
     public RecyclerView mRecyclerView;
 
@@ -42,6 +43,8 @@ public class NewArticleFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_article_list, container, false);
         ButterKnife.inject(this, view);
 
+        mRefreshLayout.setOnRefreshListener(createRefreshListener());
+
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ArticleAdapter(RequestManager.getInstance().getImageLoader(getActivity()));
@@ -54,15 +57,9 @@ public class NewArticleFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        final ArticleRequest request = new ArticleRequest(String.format("http://192.168.33.10/anime/article/read/%d", 0));
-//        getRequestQueue(getActivity()).add(request);
         final ParseArticleRequest request = new ParseArticleRequest();
         request.find();
         loading();
-    }
-
-    private RequestQueue getRequestQueue(Context context) {
-        return RequestManager.getInstance().getRequestQueue(context);
     }
 
     @Override
@@ -75,6 +72,22 @@ public class NewArticleFragment extends Fragment {
     public void onPause() {
         BusHolder.get().unregister(this);
         super.onPause();
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener createRefreshListener() {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                // TODO あとで更新処理入れる
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        };
     }
 
     private void loading() {
