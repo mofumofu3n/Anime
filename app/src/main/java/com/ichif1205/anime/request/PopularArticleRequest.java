@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PopularArticleRequest extends AbsArticleRequest {
     private static final String CLASS_NAME = "Article";
-    private static final String COL_COUNT = "count";
+    private static final String COL_COUNT = "click";
 
     public PopularArticleRequest() {
         super(CLASS_NAME, COL_COUNT);
