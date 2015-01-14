@@ -34,7 +34,6 @@ public class NewArticleFragment extends Fragment {
     @InjectView(R.id.loading)
     public ProgressBar mLoading;
 
-    private LinearLayoutManager mLayoutManager;
     private ArticleAdapter mAdapter;
 
     @Override
@@ -44,13 +43,16 @@ public class NewArticleFragment extends Fragment {
         ButterKnife.inject(this, view);
 
         mRefreshLayout.setOnRefreshListener(createRefreshListener());
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new ArticleAdapter(RequestManager.getInstance().getImageLoader(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setOnScrollListener(createScrollListener());
+
+        final ArticleScrollListener listener = new ArticleScrollListener(layoutManager);
+        listener.setOnPositionListener(createPositionListener());
+        mRecyclerView.setOnScrollListener(listener);
 
         return view;
     }
@@ -97,35 +99,24 @@ public class NewArticleFragment extends Fragment {
         mRefreshLayout.setRefreshing(false);
     }
 
-    /**
-     * 別クラスにする
-     * @return onScrollListener
-     */
-    private RecyclerView.OnScrollListener createScrollListener() {
-        return new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                final int visibleItemCount = mLayoutManager.getChildCount();
-                final int totalItemCount = mLayoutManager.getItemCount();
-                final int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-                final int firstFullyVisiblePosition = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+    private ArticleScrollListener.OnPositionListener createPositionListener() {
+       return new ArticleScrollListener.OnPositionListener() {
+           @Override
+           public void onTopItemPosition(boolean isTopPosition) {
+               mRefreshLayout.setEnabled(isTopPosition);
+           }
 
+           @Override
+           public void onPagingItemPosition(int totalItemCount) {
+               final ParseArticleRequest request = new ParseArticleRequest();
+               request.findPaging(totalItemCount);
+           }
 
-                // 一番目の記事が完全に見えている時だけ、RefreshLayoutを有効にする
-                if (firstFullyVisiblePosition == 0) {
-                    mRefreshLayout.setEnabled(true);
-                } else {
-                    mRefreshLayout.setEnabled(false);
-                }
+           @Override
+           public void onCurrentPosition(int currentItemPosition) {
 
-                final int deltaPosition = totalItemCount - (firstVisibleItemPosition + visibleItemCount);
-
-                if (deltaPosition == 3) {
-                    final ParseArticleRequest request = new ParseArticleRequest();
-                    request.findPaging(totalItemCount);
-                }
-            }
-        };
+           }
+       };
     }
 
     @Subscribe

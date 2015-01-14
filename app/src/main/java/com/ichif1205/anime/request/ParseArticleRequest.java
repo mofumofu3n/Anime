@@ -33,25 +33,24 @@ public class ParseArticleRequest {
     }
 
     public void find() {
-        if (mQuery.hasCachedResult()) {
-            mQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ONLY);
-        } else {
-            mQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
-        }
         find(0, QUERY_LIMIT, false);
     }
 
     public void forceFind() {
-        mQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         find(0, QUERY_LIMIT, false);
     }
 
     public void findPaging(int offset) {
-        mQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
         find(offset, QUERY_LIMIT, true);
     }
 
     private void find(int offset, int limit, boolean isPaging) {
+        if (mQuery.hasCachedResult()) {
+            // キャッシュがある場合はキャッシュから読み込む
+            mQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ONLY);
+        } else {
+            mQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
+        }
         mQuery.setSkip(offset);
         mQuery.setLimit(limit);
 
