@@ -11,14 +11,32 @@ import com.parse.ParseQuery;
 import java.util.List;
 
 public class ParseArticleRequest {
+    /**
+     * キャッシュ最大時間(10分)
+     */
+    private static final int MAX_CACHE_TIME_MILLIS = 10 * 60 * 1000;
+
     private static final String CLASS_NAME = "Article";
     private static final String COL_PUBLISHED_AD = "publishedAt";
 
+    private ParseQuery<ParseObject> mQuery;
+
+    public ParseArticleRequest() {
+        mQuery = ParseQuery.getQuery(CLASS_NAME);
+        mQuery.setMaxCacheAge(MAX_CACHE_TIME_MILLIS);
+    }
 
     public void find() {
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery(CLASS_NAME);
-        query.orderByDescending(COL_PUBLISHED_AD);
-        query.findInBackground(createCallback());
+        mQuery.orderByDescending(COL_PUBLISHED_AD);
+
+        if (mQuery.hasCachedResult()) {
+            mQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ONLY);
+        } else {
+            mQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ONLY);
+        }
+
+        // キャッシュから読み込み後、APIアクセスし、結果を返す
+        mQuery.findInBackground(createCallback());
     }
 
     private FindCallback<ParseObject> createCallback() {
@@ -27,6 +45,11 @@ public class ParseArticleRequest {
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e != null) {
                     BusHolder.get().post(new ErrorEvent(e));
+                    return;
+                }
+
+                if (parseObjects == null) {
+                    return;
                 }
 
                 final ArticleParser parser = new ArticleParser(parseObjects);
