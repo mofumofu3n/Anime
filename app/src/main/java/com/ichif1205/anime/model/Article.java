@@ -5,61 +5,40 @@ import android.text.format.DateFormat;
 
 import com.parse.ParseObject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Article {
-    private static final String ID = "id";
     private static final String OBJECT_ID = "objectId";
     private static final String TITLE = "title";
     private static final String URL = "url";
     private static final String IMAGE = "image";
     private static final String FEED = "feed";
-    private static final String DATE = "published_date";
     private static final String PUBLISHED_AT = "publishedAt";
-    private static final String CLICK = "click";
+    public static final String CLICK = "click";
 
     private static final String FEED_TITLE = "title";
 
     private static final String DATE_FORMAT = "MM/dd kk:mm";
 
-    public String id;
-    public String title;
-    public String url;
-    public String image;
-    public String feedName;
-    public ParseObject feed;
-    public String date;
-    public int click;
+    public final String id;
+    public final String title;
+    public final String url;
+    public final String image;
+    //    public final String feedName;
+    public final ParseObject feed;
+    public final String date;
+    public final int click;
 
-    public static Article parse(ParseObject obj) {
-        final Article article = new Article();
-        article.id = obj.getString(OBJECT_ID);
-        article.title = obj.getString(TITLE);
-        article.url = obj.getString(URL);
-        article.image = obj.getString(IMAGE);
-        article.feed = obj.getParseObject(FEED);
-        article.date = article.changeDateFormat(Long.valueOf(obj.getString(PUBLISHED_AT)));
+    public final ParseObject object;
 
-        return article;
-    }
+    public Article(ParseObject obj) {
+        object = obj;
 
-    public static Article parse(JSONObject obj) {
-        Article article = null;
-
-        try {
-            article = new Article();
-            article.id = obj.getString(ID);
-            article.title = obj.getString(TITLE);
-            article.url = obj.getString(URL);
-            article.image = obj.getString(IMAGE);
-            article.feedName = obj.getString(FEED);
-            article.date = article.changeDateFormat(obj.getLong(DATE));
-            article.click = article.changeNullToZero(obj.getString(CLICK));
-        } catch (JSONException e) {
-        }
-
-        return article;
+        id = obj.getString(OBJECT_ID);
+        title = obj.getString(TITLE);
+        url = obj.getString(URL);
+        image = obj.getString(IMAGE);
+        feed = obj.getParseObject(FEED);
+        date = changeDateFormat(Long.valueOf(obj.getString(PUBLISHED_AT)));
+        click = obj.getInt(CLICK);
     }
 
     /**

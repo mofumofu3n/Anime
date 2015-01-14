@@ -141,6 +141,9 @@ public class NewArticleFragment extends Fragment {
     public void onItemClick(ArticleAdapter.OnItemClick event) {
         final Article article = event.getArticle();
 
+        article.object.increment("click");
+        article.object.saveInBackground();
+
 //        final ShowRequest request = new ShowRequest
 //                .Builder()
 //                .setUrl(article.url)

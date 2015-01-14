@@ -17,7 +17,7 @@ public class ArticleParser {
         final List<Article> articleList = new ArrayList<>();
 
         for (ParseObject object : mParseObjects) {
-            articleList.add(Article.parse(object));
+            articleList.add(new Article(object));
         }
 
         return articleList;
