@@ -9,13 +9,12 @@ import com.parse.ParseObject;
 
 import java.util.List;
 
-public class ParseArticleRequest extends AbsArticleRequest {
-
+public class PopularArticleRequest extends AbsArticleRequest {
     private static final String CLASS_NAME = "Article";
-    private static final String COL_PUBLISHED_AD = "publishedAt";
+    private static final String COL_COUNT = "count";
 
-    public ParseArticleRequest() {
-        super(CLASS_NAME, COL_PUBLISHED_AD);
+    public PopularArticleRequest() {
+        super(CLASS_NAME, COL_COUNT);
     }
 
     @Override
