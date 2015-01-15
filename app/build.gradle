@@ -9,6 +9,7 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'crashlytics'
+apply plugin: 'robolectric'
 
 repositories {
     maven { url 'http://download.crashlytics.com/maven' }
@@ -65,4 +66,28 @@ dependencies {
     compile 'org.twitter4j:twitter4j-stream:4.0.2'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.parse.bolts:bolts-android:1.1.4'
+
+    /**
+     * Testing Framework
+     */
+    androidTestCompile 'junit:junit:4.10'
+    androidTestCompile 'org.robolectric:robolectric:2.4+'
+    androidTestCompile 'com.squareup:fest-android:1.0.+'
+}
+
+robolectric {
+    // configure the set of classes for JUnit tests
+    include '**/*Test.class'
+    exclude '**/espresso/**/*.class'
+
+    // configure max heap size of the test JVM
+    maxHeapSize = '2048m'
+
+    // configure whether failing tests should fail the build
+    ignoreFailures true
+
+    // use afterTest to listen to the test execution results
+    afterTest { descriptor, result ->
+        println "Executing test for {$descriptor.name} with result: ${result.resultType}"
+    }
 }
