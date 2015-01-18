@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="-6dp"
-        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="@dimen/browser_progress_margin_bottom"
+        android:layout_marginTop="@dimen/browser_progress_margin_top"
         android:indeterminate="false"
         android:max="100" />
 
@@ -25,7 +25,7 @@
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:paddingTop="@dimen/browser_ad_padding_top"
         android:orientation="horizontal"
         android:background="@color/browser_background"
         android:gravity="center_horizontal"

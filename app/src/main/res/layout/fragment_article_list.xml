@@ -3,8 +3,8 @@
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:paddingLeft="@dimen/article_list_padding_left"
+    android:paddingRight="@dimen/article_list_padding_right"
     tools:context="com.ichif1205.anime.list.NewArticleFragment">
 
     <FrameLayout
@@ -20,8 +20,8 @@
         <ProgressBar
             style="@android:style/Widget.Holo.ProgressBar"
             android:id="@+id/loading"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/progress_size"
+            android:layout_height="@dimen/progress_size"
             android:layout_gravity="center" />
 
     </FrameLayout>

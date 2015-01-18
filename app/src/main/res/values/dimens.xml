@@ -2,4 +2,37 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- 共通 -->
+    <dimen name="progress_size">24dp</dimen>
+
+    <!-- メニュー -->
+    <dimen name="menu_width">300dp</dimen>
+    <dimen name="menu_item_padding">16dp</dimen>
+    <dimen name="menu_item_text_size">14sp</dimen>
+
+    <!-- 記事 -->
+    <dimen name="article_tab_height">48dp</dimen>
+    <dimen name="article_list_padding_left">8dp</dimen>
+    <dimen name="article_list_padding_right">8dp</dimen>
+    <dimen name="article_item_min_height">56dp</dimen>
+    <dimen name="article_item_corner_radius">4dp</dimen>
+    <dimen name="article_item_image_height">200dp</dimen>
+
+    <!-- ブラウザ -->
+    <dimen name="browser_progress_margin_bottom">-6dp</dimen>
+    <dimen name="browser_progress_margin_top">-8dp</dimen>
+    <dimen name="browser_ad_padding_top">5dp</dimen>
+
+    <!-- 番組表 -->
+    <dimen name="lineup_item_padding_left">8dp</dimen>
+    <dimen name="lineup_item_min_height">48dp</dimen>
+
+    <!-- ツイッター -->
+    <dimen name="twitter_item_title_size">14sp</dimen>
+
+    <!-- 設定 -->
+    <dimen name="setting_item_padding_left">8dp</dimen>
+    <dimen name="setting_item_min_height">48dp</dimen>
+
 </resources>

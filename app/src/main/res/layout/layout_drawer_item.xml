@@ -5,9 +5,9 @@
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:gravity="center_vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingLeft="@dimen/menu_item_padding"
+    android:paddingRight="@dimen/menu_item_padding"
     android:textColor="@color/menu_item_text"
-    android:textSize="14sp"
+    android:textSize="@dimen/menu_item_text_size"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
 

@@ -4,13 +4,13 @@
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="4dp">
+    card_view:cardCornerRadius="@dimen/article_item_corner_radius">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:minHeight="56dp"
+        android:minHeight="@dimen/article_item_min_height"
         android:foreground="?android:selectableItemBackground">
 
             <TextView
