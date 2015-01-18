@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
 import com.ichif1205.anime.R;
-import com.ichif1205.anime.list.ArticleFragment;
+import com.ichif1205.anime.article.ArticleFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

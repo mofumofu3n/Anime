@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.browser.BrowserFragment;
 import com.ichif1205.anime.lineup.LineupFragment;
-import com.ichif1205.anime.list.ArticleFragment;
+import com.ichif1205.anime.article.ArticleFragment;
 import com.ichif1205.anime.setting.SettingFragment;
 import com.ichif1205.anime.twitter.TwitterFragment;
 

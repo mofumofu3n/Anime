@@ -1,4 +1,4 @@
-package com.ichif1205.anime.list;
+package com.ichif1205.anime.article;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
