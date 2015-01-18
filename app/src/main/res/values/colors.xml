@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="text_black">#333333</color>
+
+    <!-- メインテーマ -->
+    <color name="primary">#FF9800</color>
+    <color name="primary_dark">#F57C00</color>
+    <color name="accent">#2979FF</color>
+
+    <!-- メニュー -->
+    <color name="menu_background">@color/white</color>
+    <color name="menu_item_text">@color/text_black</color>
+
+    <!-- 記事 -->
+    <color name="article_title_background">#60ffffff</color>
+    <color name="article_title_text">@color/text_black</color>
+
+    <!-- 番組表 -->
+    <color name="lineup_item_background">@color/white</color>
+
+    <!-- ブラウザ -->
+    <color name="browser_background">@color/black</color>
+
+    <!-- 設定画面 -->
+    <color name="setting_background">@color/white</color>
+    <color name="setting_item_background">@color/white</color>
+
+</resources>

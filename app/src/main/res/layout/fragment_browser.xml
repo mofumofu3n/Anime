@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:orientation="horizontal"
-        android:background="#000"
+        android:background="@color/browser_background"
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true">
     </LinearLayout>

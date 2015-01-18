@@ -1,8 +1,6 @@
 package com.ichif1205.anime.setting;
 
 import android.content.Context;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -12,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ichif1205.anime.R;
-import com.ichif1205.anime.setting.location.LocationDialog;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,7 +29,7 @@ class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View view = inflater.inflate(R.layout.layout_setting, parent, false);
+        final View view = inflater.inflate(R.layout.layout_setting_item, parent, false);
 
         if (viewType == TYPE_LOCATION) {
             return new LocationHolder(view);

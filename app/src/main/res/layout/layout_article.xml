@@ -26,8 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="#60ffffff"
-                android:textColor="#000000"
+                android:background="@color/article_title_background"
+                android:textColor="@color/article_title_text"
                 />
 
         </RelativeLayout>

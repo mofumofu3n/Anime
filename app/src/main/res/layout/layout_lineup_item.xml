@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="8dp"
     android:minHeight="48dp"
-    android:background="#ffffff"
+    android:background="@color/lineup_item_background"
     android:foreground="?android:selectableItemBackground">
 
     <TextView
