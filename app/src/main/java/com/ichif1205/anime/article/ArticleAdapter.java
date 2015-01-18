@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.ichif1205.anime.BusHolder;
 import com.ichif1205.anime.R;
 import com.ichif1205.anime.model.Article;
 
@@ -26,6 +25,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final ImageLoader mImageLoader;
     private ArrayList<Article> mList;
 
+    private OnItemClickListener mListener;
+
     public ArticleAdapter(ImageLoader loader) {
         mImageLoader = loader;
         mList = new ArrayList<>();
@@ -34,6 +35,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void addFirst(List<Article> list) {
         mList.clear();
         mList.addAll(list);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 
     public void add(List<Article> list) {
@@ -90,16 +95,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    public class OnItemClick {
-        private final Article mArticle;
-
-        public OnItemClick(Article article) {
-            mArticle = article;
-        }
-
-        public Article getArticle() {
-            return mArticle;
-        }
+    interface OnItemClickListener {
+        void onItemClick(Article article);
     }
 
     public class CardHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -129,7 +126,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Override
         public void onClick(View v) {
-            BusHolder.get().post(new OnItemClick(mArticle));
+            if (mListener == null) {
+                return;
+            }
+
+            mListener.onItemClick(mArticle);
         }
     }
 
@@ -152,7 +153,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Override
         public void onClick(View v) {
-            BusHolder.get().post(new OnItemClick(mArticle));
+            if (mListener == null) {
+                return;
+            }
+
+            mListener.onItemClick(mArticle);
         }
     }
 }
