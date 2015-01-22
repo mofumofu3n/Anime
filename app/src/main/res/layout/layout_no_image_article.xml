@@ -4,22 +4,24 @@
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="@dimen/article_item_corner_radius">
+    android:minHeight="@dimen/article_item_min_height"
+    android:layout_marginLeft="@dimen/article_item_margin_left"
+    android:layout_marginRight="@dimen/article_item_margin_right"
+    android:layout_marginBottom="@dimen/article_item_margin_bottom"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:minHeight="@dimen/article_item_min_height"
         android:foreground="?android:selectableItemBackground">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
                 android:textColor="@color/article_title_text"
-                android:gravity="center_vertical"
+                android:textSize="@dimen/article_item_text_size"
                 />
 
     </FrameLayout>

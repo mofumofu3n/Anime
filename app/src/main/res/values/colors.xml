@@ -14,7 +14,7 @@
     <color name="menu_item_text">@color/text_black</color>
 
     <!-- 記事 -->
-    <color name="article_title_background">#60ffffff</color>
+    <color name="article_title_background">#ffffff</color>
     <color name="article_title_text">@color/text_black</color>
 
     <!-- 番組表 -->

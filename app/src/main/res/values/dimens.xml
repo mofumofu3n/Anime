@@ -16,8 +16,11 @@
     <dimen name="article_list_padding_left">8dp</dimen>
     <dimen name="article_list_padding_right">8dp</dimen>
     <dimen name="article_item_min_height">56dp</dimen>
-    <dimen name="article_item_corner_radius">4dp</dimen>
+    <dimen name="article_item_margin_left">4dp</dimen>
+    <dimen name="article_item_margin_right">4dp</dimen>
+    <dimen name="article_item_margin_bottom">8dp</dimen>
     <dimen name="article_item_image_height">200dp</dimen>
+    <dimen name="article_item_text_size">18sp</dimen>
 
     <!-- ブラウザ -->
     <dimen name="browser_progress_margin_bottom">-6dp</dimen>

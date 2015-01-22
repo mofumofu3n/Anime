@@ -3,8 +3,6 @@
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/article_list_padding_left"
-    android:paddingRight="@dimen/article_list_padding_right"
     tools:context="com.ichif1205.anime.article.NewArticleFragment">
 
     <FrameLayout
