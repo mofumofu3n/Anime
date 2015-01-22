@@ -10,6 +10,7 @@ import java.util.List;
 
 public class TodayArticleFragment extends AbsArticleFragment {
 
+
     @Override
     protected AbsArticleRequest createArticleRequest() {
         return new PopularArticleRequest();

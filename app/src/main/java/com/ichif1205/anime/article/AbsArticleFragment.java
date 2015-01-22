@@ -31,6 +31,9 @@ public abstract class AbsArticleFragment extends Fragment {
 
     protected ArticleAdapter mAdapter;
 
+    public AbsArticleFragment() {
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

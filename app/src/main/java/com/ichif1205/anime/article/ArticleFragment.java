@@ -24,6 +24,10 @@ public class ArticleFragment extends Fragment {
     @InjectView(R.id.pager)
     ViewPager mPager;
 
+    public ArticleFragment() {
+        setRetainInstance(true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_article, container, false);

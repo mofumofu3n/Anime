@@ -25,6 +25,7 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
     DrawerLayout mDrawerLayout;
 
     private DrawerAdapter mAdapter;
+
     private ActionBarDrawerToggle mDrawerToggle;
 
 
@@ -35,10 +36,12 @@ public class HomeActivity extends ActionBarActivity implements DrawerAdapter.OnI
         setContentView(R.layout.activity_home);
 
         ButterKnife.inject(this);
-
-        setupActionBar();
         setupDrawerList();
-        setupArticleFragment();
+        setupActionBar();
+
+        if (savedInstanceState == null) {
+            setupArticleFragment();
+        }
     }
 
 
